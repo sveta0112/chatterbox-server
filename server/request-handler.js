@@ -20,20 +20,7 @@ var defaultCorsHeaders = {
 };
 // These headers will allow Cross-Origin Resource Sharing (CORS).
 // This code allows this server to talk to websites that
-// are on different domains, for instance, your chat client.
-// var Messages = {
-  
-//   NewMessage: function(userName, messageText, roomName = 'lobby',id) {
-    
-//     this.username = userName;
-//     this.text = messageText;
-//     this.roomname = roomName;
-//     this.id = `message_${this.storage.length + 1}`;
-    
-//   },
-  
-//   storage: []
-// };
+// are on different domains, for instance, your chat client.  
 var storage = [];
 
 var requestHandler = function(request, response) {
@@ -47,8 +34,6 @@ var requestHandler = function(request, response) {
   // other than plain text, like JSON or HTML.
   headers['Content-Type'] = 'application/json';
 
-
-
   // Do some basic logging.
   //
   // Adding more logging to your server can be an easy way to get passive
@@ -58,47 +43,31 @@ var requestHandler = function(request, response) {
   console.log(request);
   // The outgoing status.
 
-
-
   if (request.method === 'POST' && request.url === '/classes/messages') {
-    //response.writeHead(statusCode, headers);
-    response.statusCode = 201;
+    statusCode = 201;
+    response.writeHead(statusCode, headers);
     let body = [];
     request.on('data', (chunk) => {
       body.push(chunk);
-      Messages.storage.push(chunk);
     }).on('end', () => { 
       body = Buffer.concat(body).toString();
-      storage.push(JSON.parse(body));
-      //Messages.storage = Messages.storage.concat(body);
-      //response.end(JSON.stringify(Messages.storage[Messages.storage.indexOf('message_' + Messages.storage.length + 1 + '')]));
-      // response.end(body);
+      body = JSON.parse(body);
+      storage.push(body);
+      response.end();
     });
-    response.end();
-    
-    // Should we concat Messages.storage to Buffer?
-
-    // the response has a
-
-
-
-    // response.on('error', (err) => {
-    //   console.error(err);
-    // });
-    //
-    // request.pipe(response);
-    // console.log(response);
   } else if (request.method === 'GET' && request.url === '/classes/messages') {
-    //console.log(request);
     response.writeHead(statusCode, headers);
     let myObj = {results: storage};
-    
-    //myObj.results = Messages.storage;
-    response.end(JSON.stringify(myObj));
-  } else {
-    response.statusCode = 404;
+        response.end(JSON.stringify(myObj));
+  } else if(request.method === 'OPTIONS' && request.url === '/classes/messages'){
+    response.end();
+  }else {
+    statusCode = 404;
+    response.writeHead(statusCode,headers)
     response.end();
   }
+};
+exports.requestHandler = requestHandler;
   // .writeHead() writes to the request line and headers of the response,
   // which includes the status and all headers.
   // Make sure to always call response.end() - Node may not send
@@ -116,7 +85,6 @@ var requestHandler = function(request, response) {
   //
   // Documentation for both request and response can be found in the HTTP section at
   // http://nodejs.org/documentation/api/
-};
 
 //
 // Your chat client is running from a url like file://your/chat/client/index.html,
@@ -125,5 +93,4 @@ var requestHandler = function(request, response) {
 // Another way to get around this restriction is to serve you chat
 // client from this domain by setting up static file serving.
 
-exports.requestHandler = requestHandler;
 
