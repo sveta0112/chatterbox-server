@@ -75,5 +75,43 @@ describe('server', function() {
     });
   });
 
+  // NEW TESTS: ---------------------------------------------------------
+
+  var optionsParams0 = {
+    method: 'OPTIONS',
+    uri: 'http://127.0.0.1:3000/classes/messages',
+  };
+
+  var optionsParams1 = {
+    method: 'OPTIONS',
+    uri: 'http://127.0.0.1:3000/*',
+  };
+
+  var optionsParams2 = {
+    method: 'OPTIONS',
+    uri: 'http://127.0.0.1:3000/',
+  };
+    
+  it('Should 200 when asked for Options from /classes/messages', function(done) {
+    request(optionsParams0, function(error, response, body) {
+      expect(response.statusCode).to.equal(200);
+      done();
+    });
+  });   
+
+  it('Should 200 when asked for Options from *', function(done) {
+    request(optionsParams1, function(error, response, body) {
+      expect(response.statusCode).to.equal(200);
+      done();
+    });
+  });
+
+  it('Should 200 when asked for Options from http://127.0.0.1:3000/', function(done) {
+    request(optionsParams2, function(error, response, body) {
+      expect(response.statusCode).to.equal(200);
+      done();
+    });
+  });
+//-------------------------------------------------------------------------
 
 });

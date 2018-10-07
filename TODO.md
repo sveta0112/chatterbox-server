@@ -17,12 +17,12 @@
   - [X] install bower
   - [X] install live-server
   - [X] use local host server, instead of parse.CAMPUS.hackreactor.com
-  - [ ] run npm test
-  - [ ] identify what stubs do 
-  - [ ] identify what uis done function does
-  - [ ] write two new tests
+  - [X] run npm test
+  - [X] identify what stubs do 
+  - [X] identify what our done function does
+  - [ ] write three new tests
   - [ ] handle options request in router
-  - [ ] send back properiate header,minimally need 200 OK, and allow header with a list HTTp methods,that maybe used with these resources
+    - [ ] send back properiate header,minimally need 200 OK, and allow header with a list HTTp methods,that maybe used with these resources
 
 
 
